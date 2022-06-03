@@ -10,6 +10,7 @@ func main() {
 	db := models.SetupDB()
 	db.AutoMigrate(&models.Employee{})
 
+	defer db.Close()
 	r := routes.SetupRoutes(db)
 	r.Run()
 }

@@ -1,15 +1,28 @@
 package models
 
 import (
+	"fmt"
 	"log"
+	"os"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
+	"github.com/joho/godotenv"
 )
 
 // SetupDB : initializing mysql database
 func SetupDB() *gorm.DB {
-	db, err := gorm.Open("postgres", "host=localhost port=5432 user=postgres dbname=employee password=bodoamat")
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
+	host := os.Getenv("host")
+	port := os.Getenv("port")
+	user := os.Getenv("user")
+	dbname := os.Getenv("dbname")
+	password := os.Getenv("password")
+	db, err := gorm.Open("postgres", fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s", host, port, user, dbname, password))
 
 	if err != nil {
 		log.Fatal(err)
